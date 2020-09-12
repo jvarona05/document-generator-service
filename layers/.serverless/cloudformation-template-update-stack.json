@@ -1,0 +1,102 @@
+{
+  "AWSTemplateFormatVersion": "2010-09-09",
+  "Description": "The AWS CloudFormation template for this Serverless application",
+  "Resources": {
+    "ServerlessDeploymentBucket": {
+      "Type": "AWS::S3::Bucket",
+      "Properties": {
+        "BucketEncryption": {
+          "ServerSideEncryptionConfiguration": [
+            {
+              "ServerSideEncryptionByDefault": {
+                "SSEAlgorithm": "AES256"
+              }
+            }
+          ]
+        }
+      }
+    },
+    "ServerlessDeploymentBucketPolicy": {
+      "Type": "AWS::S3::BucketPolicy",
+      "Properties": {
+        "Bucket": {
+          "Ref": "ServerlessDeploymentBucket"
+        },
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": "s3:*",
+              "Effect": "Deny",
+              "Principal": "*",
+              "Resource": [
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:",
+                      {
+                        "Ref": "AWS::Partition"
+                      },
+                      ":s3:::",
+                      {
+                        "Ref": "ServerlessDeploymentBucket"
+                      },
+                      "/*"
+                    ]
+                  ]
+                }
+              ],
+              "Condition": {
+                "Bool": {
+                  "aws:SecureTransport": false
+                }
+              }
+            }
+          ]
+        }
+      }
+    },
+    "HtmlToPdfLambdaLayer": {
+      "Type": "AWS::Lambda::LayerVersion",
+      "Properties": {
+        "Content": {
+          "S3Bucket": {
+            "Ref": "ServerlessDeploymentBucket"
+          },
+          "S3Key": "serverless/executables-layer/dev/1599934374745-2020-09-12T18:12:54.745Z/htmlToPdf.zip"
+        },
+        "LayerName": "htmlToPdf-dev",
+        "Description": "Stores all the fonts and executable binaries required to convert html to pdf"
+      }
+    }
+  },
+  "Outputs": {
+    "ServerlessDeploymentBucketName": {
+      "Value": {
+        "Ref": "ServerlessDeploymentBucket"
+      }
+    },
+    "HtmlToPdfLambdaLayerQualifiedArn": {
+      "Description": "Current Lambda layer version",
+      "Value": {
+        "Ref": "HtmlToPdfLambdaLayer"
+      }
+    },
+    "HtmlToPdfLambdaLayerHash": {
+      "Description": "Current Lambda layer hash",
+      "Value": "0c4c413c41b57e17ac4d2304a7f92fbac47dfeaa"
+    },
+    "HtmlToPdfLambdaLayerS3Key": {
+      "Description": "Current Lambda layer S3Key",
+      "Value": "serverless/executables-layer/dev/1599934374745-2020-09-12T18:12:54.745Z/htmlToPdf.zip"
+    },
+    "HtmlToPdfLayerExport": {
+      "Value": {
+        "Ref": "HtmlToPdfLambdaLayer"
+      },
+      "Export": {
+        "Name": "HtmlToPdfLambdaLayer-dev"
+      }
+    }
+  }
+}

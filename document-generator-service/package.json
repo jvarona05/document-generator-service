@@ -1,0 +1,17 @@
+{
+  "name": "file-generator-service",
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "aws-sdk": "^2.7.9",
+    "handlebars": "^4.7.6",
+    "html-pdf": "^2.2.0",
+    "node-fetch": "^1.6.3",
+    "serverless-webpack": "^5.3.4"
+  },
+  "author": "",
+  "license": "ISC"
+}
