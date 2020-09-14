@@ -22,6 +22,8 @@ frameworkVersion: '2'
 
 custom:
   bucket: templates-45236
+  document-bucket: documents-bucket-90873
+  css-bucket: css-bucket-90873
 
 provider:
   name: aws
@@ -39,6 +41,16 @@ provider:
         - s3:PutObjectAcl
         - s3:GetObject
       Resource: "arn:aws:s3:::${self:custom.bucket}/*"
+    - Effect: Allow
+      Action:
+        - s3:PutObject
+        - s3:PutObjectAcl
+      Resource: "arn:aws:s3:::${self:custom.document-bucket}/*"
+    - Effect: Allow
+      Action:
+        - s3:PutObject
+        - s3:PutObjectAcl
+      Resource: "arn:aws:s3:::${self:custom.css-bucket}/*"
 
 # you can define service wide environment variables here
 #  environment:
@@ -68,8 +80,24 @@ functions:
                 templateId: true
               paths:
                 vars: true
+  generateCss:
+    handler: handler.generateCss
+    layers:
+      - ${cf:executables-layer-dev.HtmlToPdfLayerExport}
+    events:
+      - http:
+          path: generateCss
+          method: post
+          request:
+            parameters:
+              querystrings:
+                templateId: true
+              paths:
+                vars: true
     environment:
       BUCKET: ${self:custom.bucket}
+      DOCUMENT_BUCKET: ${self:custom.document-bucket}
+      CSS_BUCKET: ${self:custom.css-bucket}
 #    The following are a few example events you can configure
 #    NOTE: Please make sure to change your handler code to work with those events
 #    Check the event documentation for details
