@@ -80,6 +80,10 @@ functions:
                 templateId: true
               paths:
                 vars: true
+    environment:
+      BUCKET: ${self:custom.bucket}
+      DOCUMENT_BUCKET: ${self:custom.document-bucket}
+      CSS_BUCKET: ${self:custom.css-bucket}
   generateCss:
     handler: handler.generateCss
     layers:

@@ -7,26 +7,24 @@ const AWS = require('aws-sdk');
 process.env.PATH = `${process.env.PATH}:/opt`
 process.env.FONTCONFIG_PATH = '/opt'
 process.env.LD_LIBRARY_PATH = '/opt'
+
 const S3 = new AWS.S3();
 
 module.exports.hello = async event => {
 
-  const { filePath, vars } = JSON.parse(event.body)
+  const { fileId, templateKey, data } = JSON.parse(event.body)
 
   try {
-    let { Body }  = await S3.getObject({Bucket: process.env.BUCKET, Key: filePath}).promise()
+    let { Body }  = await S3.getObject({Bucket: process.env.BUCKET, Key: `pdf/${templateKey}.hbs`}).promise()
 
     // Body will be a buffer type so need to convert it to string before converting to pdf
     let html = Body.toString()
 
-    html = handlebars.compile(html)(vars)
+    html = handlebars.compile(html)(data)
 
     let file = await exportHtmlToPdf(html)
-
-    // path where sample.pdf file will stored in s3
-    const Key = `pdf/sample.pdf`
     
-    const url = await S3.putObject({ Bucket: process.env.BUCKET, Key, Body: file }).promise()
+    const url = await S3.putObject({ Bucket: process.env.DOCUMENT_BUCKET, Key: `${fileId}.pdf`, Body: file }).promise()
 
     return {
       statusCode: 200,

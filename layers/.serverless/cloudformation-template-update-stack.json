@@ -63,7 +63,7 @@
           "S3Bucket": {
             "Ref": "ServerlessDeploymentBucket"
           },
-          "S3Key": "serverless/executables-layer/dev/1599934374745-2020-09-12T18:12:54.745Z/htmlToPdf.zip"
+          "S3Key": "serverless/executables-layer/dev/1600118572681-2020-09-14T21:22:52.681Z/htmlToPdf.zip"
         },
         "LayerName": "htmlToPdf-dev",
         "Description": "Stores all the fonts and executable binaries required to convert html to pdf"
@@ -88,7 +88,7 @@
     },
     "HtmlToPdfLambdaLayerS3Key": {
       "Description": "Current Lambda layer S3Key",
-      "Value": "serverless/executables-layer/dev/1599934374745-2020-09-12T18:12:54.745Z/htmlToPdf.zip"
+      "Value": "serverless/executables-layer/dev/1600118572681-2020-09-14T21:22:52.681Z/htmlToPdf.zip"
     },
     "HtmlToPdfLayerExport": {
       "Value": {
