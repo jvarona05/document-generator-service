@@ -10,12 +10,12 @@ process.env.LD_LIBRARY_PATH = '/opt'
 
 const S3 = new AWS.S3();
 
-module.exports.hello = async event => {
+module.exports.generateDocument = async event => {
 
   const { fileId, templateKey, data } = JSON.parse(event.body)
 
   try {
-    let { Body }  = await S3.getObject({Bucket: process.env.BUCKET, Key: `pdf/${templateKey}.hbs`}).promise()
+    let { Body }  = await S3.getObject({Bucket: process.env.TEMPLATE_BUCKET, Key: `pdf/${templateKey}.hbs`}).promise()
 
     // Body will be a buffer type so need to convert it to string before converting to pdf
     let html = Body.toString()
