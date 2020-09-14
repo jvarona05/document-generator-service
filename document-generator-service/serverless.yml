@@ -35,7 +35,7 @@ functions:
       - ${cf:executables-layer-dev.HtmlToPdfLayerExport}
     events:
       - http:
-          path: test
+          path: generateDocument
           method: post
     environment:
       TEMPLATE_BUCKET: ${self:custom.template-bucket}
